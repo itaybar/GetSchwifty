@@ -38,7 +38,6 @@ export function checkBlockSwitch(table){
     let x = -1, y = -1;
     let checker = {
         IsSwitchable: function(blockX, blockY) {
-            console.log("trying switch ", blockX, " ", blockY);
             let toReturn = false;
             if (x !== -1 && y !== -1){
                 if (table[blockY][blockX] === 0 || table[y][x] === 0) {
@@ -68,7 +67,6 @@ function main() {
     do {
         var table = generateTable(size);
     } while (!checkTableValidity(table));
-    console.log(table);
     drawTableFromNumberArray(table)
 }
 
