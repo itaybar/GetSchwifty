@@ -1,4 +1,5 @@
 import {generateTable} from './model.js';
+import {drawTableFromNumberArray} from './view.js';
 
 function getNumberOpposites(table, elementY, elementX) {
     let numberOpposites = 0;
@@ -32,9 +33,10 @@ function checkTableValidity(table) {
 }
 
 
-function checkBlockSwitch(table){
+export function checkBlockSwitch(table){
     let x = -1, y = -1;
-    function TrySwitch(blockX, blockY) {
+    return function TrySwitch(blockX, blockY) {
+        console.log("trying switch ", blockX, " ", blockY);
         if (x !== -1 && y !== -1){
             if (table[blockY][blockX] === 0 || table[y][x] === 0) {
                 if (Math.abs(blockX - x) === 0 && Math.abs(blockY - y) === 1){
@@ -60,6 +62,7 @@ function main() {
         var table = generateTable(size);
     } while (!checkTableValidity(table));
     console.log(table);
+    drawTableFromNumberArray(table)
 }
 
 main();
