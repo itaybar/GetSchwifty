@@ -34,28 +34,33 @@ function checkTableValidity(table) {
     return numberOpposites % 2 === 0;
 }
 
-
 export function checkBlockSwitch(table){
     let x = -1, y = -1;
-    return function TrySwitch(blockX, blockY) {
-        console.log("trying switch ", blockX, " ", blockY);
-        if (x !== -1 && y !== -1){
-            if (table[blockY][blockX] === 0 || table[y][x] === 0) {
-                if (Math.abs(blockX - x) === 0 && Math.abs(blockY - y) === 1){
-                    return true;
+    let checker = {
+        IsSwitchable: function(blockX, blockY) {
+            console.log("trying switch ", blockX, " ", blockY);
+            let toReturn = false;
+            if (x !== -1 && y !== -1){
+                if (table[blockY][blockX] === 0 || table[y][x] === 0) {
+                    if ((Math.abs(blockX - x) === 0 && Math.abs(blockY - y) === 1) || (Math.abs(blockX - x) === 1 && Math.abs(blockY - y) === 0)){
+                        let local = table[y][x];
+                        table[y][x] = table[blockY][blockX];
+                        table[blockY][blockX] = local;
+                        toReturn = [x, y, blockX, blockY];
+                    }
                 }
-                if (Math.abs(blockX - x) === 1 && Math.abs(blockY - y) === 0){
-                    return true;
-                }
+                // TODO: call notifyError in view
+                x = -1;
+                y = -1;
             }
-            // TODO: call notifyError in view
+            else {
+                x = blockX;
+                y = blockY;
+            }
+            return toReturn;
         }
-        else {
-            x = blockX;
-            y = blockY;
-        }
-        return false;
     }
+    return checker;
 }
 
 function main() {
