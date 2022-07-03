@@ -31,6 +31,29 @@ function checkTableValidity(table) {
     return numberOpposites % 2 === 0;
 }
 
+
+function checkBlockSwitch(table){
+    let x = -1, y = -1;
+    function TrySwitch(blockX, blockY) {
+        if (x !== -1 && y !== -1){
+            if (table[blockY][blockX] === 0 || table[y][x] === 0) {
+                if (Math.abs(blockX - x) === 0 && Math.abs(blockY - y) === 1){
+                    return true;
+                }
+                if (Math.abs(blockX - x) === 1 && Math.abs(blockY - y) === 0){
+                    return true;
+                }
+            }
+            // TODO: call notifyError in view
+        }
+        else {
+            x = blockX;
+            y = blockY;
+        }
+        return false;
+    }
+}
+
 function main() {
     let size = 3;
     do {
