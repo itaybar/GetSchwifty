@@ -3,11 +3,13 @@ import {drawTableFromNumberArray} from './view.js';
 
 function getNumberOpposites(table, elementY, elementX) {
     let numberOpposites = 0;
+    let rowIndex = elementX
     for (let y = elementY; y < table.length; y++) {
-        for (let x = elementX; x < table[y].length; x++) {
+        for (let x = rowIndex; x < table[y].length; x++) {
             if (table[y][x] !== 0 && table[y][x] < table[elementY][elementX]) {
                 ++numberOpposites;
             }
+            rowIndex = 0;
         }
     }
     return numberOpposites
