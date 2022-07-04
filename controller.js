@@ -3,11 +3,11 @@ import {drawTableFromNumberArray} from './view.js';
 
 function getNumberOpposites(table, elementY, elementX) {
     let numberOpposites = 0;
-    let rowIndex = elementX
-    for (let y = elementY; y < table.length; y++) {
-        for (let x = rowIndex; x < table[y].length; x++) {
-            if (table[y][x] !== 0 && table[y][x] < table[elementY][elementX]) {
-                ++numberOpposites;
+                let rowIndex = elementX
+                for (let y = elementY; y < table.length; y++) {
+                    for (let x = rowIndex; x < table[y].length; x++) {
+                        if (table[y][x] !== 0 && table[y][x] < table[elementY][elementX]) {
+                            ++numberOpposites;
             }
             rowIndex = 0;
         }
@@ -41,6 +41,18 @@ export function checkBlockSwitch(table){
         }
     }
     return checker;
+}
+
+export function isTableSolved(table) {
+    let numberOpposites = 0;
+    for (let y = 0; y < table.length; y++) {
+        for (let x = 0; x < table[y].length; x++) {
+            if (table[y][x] !== 0) {
+                numberOpposites += getNumberOpposites(table, y, x);
+            }
+        }
+    }
+    return numberOpposites === 0;
 }
 
 function main() {

@@ -1,4 +1,4 @@
-import {checkBlockSwitch} from './controller.js';
+import {checkBlockSwitch, isTableSolved} from './controller.js';
 
 function getIndexById(table, id) {
     for (let y = 0; y < table.length; y++) {
@@ -12,6 +12,11 @@ function getIndexById(table, id) {
 
 function  getEmptyBlockIndex(table) {
     return getIndexById(table, 0);
+}
+
+function notifyWin() {
+    document.getElementById('game-table').style.display = 'none';
+    document.getElementById('win-sign').style.display = 'block';
 }
 
 export function drawTableFromNumberArray(table) {
@@ -34,6 +39,10 @@ export function drawTableFromNumberArray(table) {
                     table[emptyBlock[1]][emptyBlock[0]] = table[clickedBlock[1]][clickedBlock[0]];
                     table[clickedBlock[1]][clickedBlock[0]] = local;
                     switchBlocks(table, ...clickedBlock, ...emptyBlock);
+                    if (isTableSolved(table)){
+                        console.log("win!!");
+                        notifyWin();
+                    }
                 }
             };
             rowDom.appendChild(blockDom);
