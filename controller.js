@@ -1,12 +1,19 @@
 import {generateTable} from './model.js';
 import {drawTableFromNumberArray} from './view.js';
 
-function getNumberOpposites(table, elementY, elementX) {
+export class Point {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+}
+
+function getNumberOpposites(table, elementPoint) {
     let numberOpposites = 0;
-                let rowIndex = elementX
-                for (let y = elementY; y < table.length; y++) {
+                let rowIndex = elementPoint.x
+                for (let y = elementPoint.y; y < table.length; y++) {
                     for (let x = rowIndex; x < table[y].length; x++) {
-                        if (table[y][x] !== 0 && table[y][x] < table[elementY][elementX]) {
+                        if (table[y][x] !== 0 && table[y][x] < table[elementPoint.y][elementPoint.x]) {
                             ++numberOpposites;
             }
             rowIndex = 0;
@@ -36,8 +43,8 @@ function checkTableValidity(table) {
 
 export function checkBlockSwitch(table){
     let checker = {
-        IsSwitchable: function(blockX, blockY, emptyX, emptyY) {
-            return Math.abs(blockX - emptyX) + Math.abs(blockY - emptyY) === 1;
+        IsSwitchable: function(blockPoint, emptyPoint) {
+            return Math.abs(blockPoint.x - emptyPoint.x) + Math.abs(blockPoint.y - emptyPoint.y) === 1;
         }
     }
     return checker;
@@ -48,7 +55,7 @@ export function isTableSolved(table) {
     for (let y = 0; y < table.length; y++) {
         for (let x = 0; x < table[y].length; x++) {
             if (table[y][x] !== 0) {
-                numberOpposites += getNumberOpposites(table, y, x);
+                numberOpposites += getNumberOpposites(table,new Point(x,y));
             }
         }
     }

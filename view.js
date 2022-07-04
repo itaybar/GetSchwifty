@@ -1,4 +1,4 @@
-import {checkBlockSwitch, isTableSolved} from './controller.js';
+import {checkBlockSwitch, isTableSolved, Point} from './controller.js';
 
 function getIndexById(table, id) {
     for (let y = 0; y < table.length; y++) {
@@ -19,6 +19,12 @@ function notifyWin() {
     document.getElementById('win-sign').style.display = 'block';
 }
 
+function swapVals(table, pointA, pointB) {
+    let local = table[pointA.y][pointA.x];
+    table[pointA.y][pointA.x] = table[pointB.y][pointB.x];
+    table[pointB.y][pointB.x] = local;
+}
+
 export function drawTableFromNumberArray(table) {
     let tableDOM = document.getElementById('game-table');
     let blockSwitchTester = checkBlockSwitch(table)
@@ -32,13 +38,11 @@ export function drawTableFromNumberArray(table) {
                 blockDom.innerHTML= table[y][x];
             }
             blockDom.onclick = (ev) => {
-                let emptyBlock = getEmptyBlockIndex(table);
-                let clickedBlock = getIndexById(table, ev.target.id)
-                if (blockSwitchTester.IsSwitchable(...clickedBlock, ...emptyBlock)){
-                    let local = table[emptyBlock[1]][emptyBlock[0]];
-                    table[emptyBlock[1]][emptyBlock[0]] = table[clickedBlock[1]][clickedBlock[0]];
-                    table[clickedBlock[1]][clickedBlock[0]] = local;
-                    switchBlocks(table, ...clickedBlock, ...emptyBlock);
+                let emptyBlockPoint = new Point(...getEmptyBlockIndex(table));
+                let clickedBlockPoint = new Point(...getIndexById(table, ev.target.id));
+                if (blockSwitchTester.IsSwitchable(clickedBlockPoint, emptyBlockPoint)){
+                    swapVals(table, emptyBlockPoint, clickedBlockPoint);
+                    switchBlocks(table, clickedBlockPoint, emptyBlockPoint);
                     if (isTableSolved(table)){
                         console.log("win!!");
                         notifyWin();
@@ -65,9 +69,9 @@ function swap(node1, node2) {
     bParent.replaceChild(node1, bHolder);
 }
 
-export function switchBlocks(table, firstX, firstY, secondX, secondY) {
-    let firstBlock = document.getElementById(table[firstY][firstX]);
-    let secondBlock = document.getElementById(table[secondY][secondX]);
+export function switchBlocks(table, firstPoint, secondPoint) {
+    let firstBlock = document.getElementById(table[firstPoint.y][firstPoint.x]);
+    let secondBlock = document.getElementById(table[secondPoint.y][secondPoint.x]);
 
     swap(firstBlock, secondBlock);
  }
