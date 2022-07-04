@@ -35,28 +35,9 @@ function checkTableValidity(table) {
 }
 
 export function checkBlockSwitch(table){
-    let x = -1, y = -1;
     let checker = {
-        IsSwitchable: function(blockX, blockY) {
-            let toReturn = false;
-            if (x !== -1 && y !== -1){
-                if (table[blockY][blockX] === 0 || table[y][x] === 0) {
-                    if ((Math.abs(blockX - x) === 0 && Math.abs(blockY - y) === 1) || (Math.abs(blockX - x) === 1 && Math.abs(blockY - y) === 0)){
-                        let local = table[y][x];
-                        table[y][x] = table[blockY][blockX];
-                        table[blockY][blockX] = local;
-                        toReturn = [x, y, blockX, blockY];
-                    }
-                }
-                // TODO: call notifyError in view
-                x = -1;
-                y = -1;
-            }
-            else {
-                x = blockX;
-                y = blockY;
-            }
-            return toReturn;
+        IsSwitchable: function(blockX, blockY, emptyX, emptyY) {
+            return Math.abs(blockX - emptyX) + Math.abs(blockY - emptyY) === 1;
         }
     }
     return checker;
