@@ -1,4 +1,4 @@
-import {checkBlockSwitch} from './controller.js';
+import {checkBlockSwitch, isTableSolved} from './controller.js';
 
 function getIndexById(table, id) {
     for (let y = 0; y < table.length; y++) {
@@ -34,6 +34,10 @@ export function drawTableFromNumberArray(table) {
                     table[emptyBlock[1]][emptyBlock[0]] = table[clickedBlock[1]][clickedBlock[0]];
                     table[clickedBlock[1]][clickedBlock[0]] = local;
                     switchBlocks(table, ...clickedBlock, ...emptyBlock);
+                    if (isTableSolved(table)){
+                        console.log("win!!");
+                        //TODO show in gui
+                    }
                 }
             };
             rowDom.appendChild(blockDom);
