@@ -10,6 +10,10 @@ function getIndexById(table, id) {
     }
 }
 
+function  getEmptyBlockIndex(table) {
+    return getIndexById(table, 0);
+}
+
 export function drawTableFromNumberArray(table) {
     let tableDOM = document.getElementById('game-table');
     let blockSwitchTester = checkBlockSwitch(table)
@@ -23,9 +27,13 @@ export function drawTableFromNumberArray(table) {
                 blockDom.innerHTML= table[y][x];
             }
             blockDom.onclick = (ev) => {
-                let points = blockSwitchTester.IsSwitchable(...getIndexById(table, ev.target.id));
-                if (points){
-                    switchBlocks(table, ...points);
+                let emptyBlock = getEmptyBlockIndex(table);
+                let clickedBlock = getIndexById(table, ev.target.id)
+                if (blockSwitchTester.IsSwitchable(...clickedBlock, ...emptyBlock)){
+                    let local = table[emptyBlock[1]][emptyBlock[0]];
+                    table[emptyBlock[1]][emptyBlock[0]] = table[clickedBlock[1]][clickedBlock[0]];
+                    table[clickedBlock[1]][clickedBlock[0]] = local;
+                    switchBlocks(table, ...clickedBlock, ...emptyBlock);
                 }
             };
             rowDom.appendChild(blockDom);
