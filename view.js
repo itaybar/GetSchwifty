@@ -37,25 +37,27 @@ export function drawTableFromNumberArray(table) {
             if (table[y][x] !== 0) {
                 blockDom.innerHTML= table[y][x];
             }
-            blockDom.onclick = (ev) => {
-                let emptyBlockPoint = new Point(...getEmptyBlockIndex(table));
-                let clickedBlockPoint = new Point(...getIndexById(table, ev.target.id));
-                if (blockSwitchTester.IsSwitchable(clickedBlockPoint, emptyBlockPoint)){
-                    swapVals(table, emptyBlockPoint, clickedBlockPoint);
-                    switchBlocks(table, clickedBlockPoint, emptyBlockPoint);
-                    if (isTableSolved(table)){
-                        console.log("win!!");
-                        notifyWin();
-                    }
-                }
-            };
+            blockDom.onclick = handleClick;
             rowDom.appendChild(blockDom);
         }
         tableDOM.appendChild(rowDom);
     }
- }
 
-function swap(node1, node2) {
+    function handleClick(ev) {
+        let emptyBlockPoint = new Point(...getEmptyBlockIndex(table));
+        let clickedBlockPoint = new Point(...getIndexById(table, ev.target.id));
+        if (blockSwitchTester.IsSwitchable(clickedBlockPoint, emptyBlockPoint)){
+            swapVals(table, emptyBlockPoint, clickedBlockPoint);
+            switchBlocks(table, clickedBlockPoint, emptyBlockPoint);
+            if (isTableSolved(table)){
+                console.log("win!!");
+                notifyWin();
+            }
+        }
+    }
+}
+
+function swapElement(node1, node2) {
     var aParent = node1.parentNode;
     var bParent = node2.parentNode;
 
@@ -73,5 +75,5 @@ export function switchBlocks(table, firstPoint, secondPoint) {
     let firstBlock = document.getElementById(table[firstPoint.y][firstPoint.x]);
     let secondBlock = document.getElementById(table[secondPoint.y][secondPoint.x]);
 
-    swap(firstBlock, secondBlock);
+    swapElement(firstBlock, secondBlock);
  }
