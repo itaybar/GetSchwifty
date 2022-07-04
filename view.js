@@ -14,6 +14,11 @@ function  getEmptyBlockIndex(table) {
     return getIndexById(table, 0);
 }
 
+function notifyWin() {
+    document.getElementById('game-table').style.display = 'none';
+    document.getElementById('win-sign').style.display = 'block';
+}
+
 export function drawTableFromNumberArray(table) {
     let tableDOM = document.getElementById('game-table');
     let blockSwitchTester = checkBlockSwitch(table)
@@ -36,7 +41,7 @@ export function drawTableFromNumberArray(table) {
                     switchBlocks(table, ...clickedBlock, ...emptyBlock);
                     if (isTableSolved(table)){
                         console.log("win!!");
-                        //TODO show in gui
+                        notifyWin();
                     }
                 }
             };
